@@ -228,75 +228,76 @@
 
 
   Calendar.prototype.presetCreate = function () {
+    var self = this;
     var ul_presets = $('<ul class="dr-preset-list" style="display: none;"></ul>');
-    var presets = typeof this.settings.presets == 'object' ? this.settings.presets : this.getDefaultPresets();
+    var presets = typeof self.settings.presets == 'object' ? self.settings.presets : getDefaultPresets();
 
     $.each(presets, function (i, d) {
-      d.start = moment.max(moment(d.start), this.earliest_date);
-      d.end = moment.min(d.end, this.latest_date);
+      d.start = moment.max(moment(d.start), self.earliest_date);
+      d.end = moment.min(moment(d.end), self.latest_date);
 
       if (!d.start.isAfter(d.end)) {
-        this.appendPresetHtml(d, ul_presets);
+        appendPresetHtml(d, ul_presets);
       }
     });
 
     return ul_presets;
-  }
 
-  Calendar.prototype.getDefaultPresets = function () {
-    var defaultPresets =
-      [{
-        label: 'Last 30 days',
-        start: moment().subtract(29, 'days'),
-        end: moment()
-      }, {
-        label: 'Last month',
-        start: moment().subtract(1, 'month').startOf('month'),
-        end: moment().subtract(1, 'month').endOf('month')
-      }, {
-        label: 'Last 3 months',
-        start: moment().subtract(3, 'month').startOf('month'),
-        end: moment().subtract(1, 'month').endOf('month')
-      }, {
-        label: 'Last 6 months',
-        start: moment().subtract(6, 'month').startOf('month'),
-        end: moment().subtract(1, 'month').endOf('month')
-      }, {
-        label: 'Last year',
-        start: moment().subtract(12, 'month').startOf('month'),
-        end: moment().subtract(1, 'month').endOf('month')
-      }, {
-        label: 'All time',
-        start: this.earliest_date,
-        end: this.latest_date
-      }];
+    function getDefaultPresets() {
+      var defaultPresets =
+        [{
+          label: 'Last 30 days',
+          start: moment().subtract(29, 'days'),
+          end: moment()
+        }, {
+          label: 'Last month',
+          start: moment().subtract(1, 'month').startOf('month'),
+          end: moment().subtract(1, 'month').endOf('month')
+        }, {
+          label: 'Last 3 months',
+          start: moment().subtract(3, 'month').startOf('month'),
+          end: moment().subtract(1, 'month').endOf('month')
+        }, {
+          label: 'Last 6 months',
+          start: moment().subtract(6, 'month').startOf('month'),
+          end: moment().subtract(1, 'month').endOf('month')
+        }, {
+          label: 'Last year',
+          start: moment().subtract(12, 'month').startOf('month'),
+          end: moment().subtract(1, 'month').endOf('month')
+        }, {
+          label: 'All time',
+          start: self.earliest_date,
+          end: self.latest_date
+        }];
 
-    if (moment().diff(moment().startOf('month'), 'days') >= 6) {
+      if (moment().diff(moment().startOf('month'), 'days') >= 6) {
 
-      defaultPresets.splice(1, 0, {
-        label: 'This month',
-        start: moment().startOf('month'),
-        end: moment()
-      });
+        defaultPresets.splice(1, 0, {
+          label: 'This month',
+          start: moment().startOf('month'),
+          end: moment()
+        });
+      }
+
+      return defaultPresets;
     }
 
-    return defaultPresets;
-  }
+    function appendPresetHtml(preset, ul) {
+      var startISO = preset.start.toISOString();
+      var endISO = preset.end.toISOString();
+      var string = preset.start.format(self.format.preset) + ' &ndash; ' + preset.end.format(self.format.preset);
 
-  Calendar.prototype.appendPresetHtml = function (preset, ul) {
-    var startISO = preset.start.toISOString();
-    var endISO = preset.end.toISOString();
-    var string = preset.start.format(this.format.preset) + ' &ndash; ' + preset.end.format(this.format.preset);
-
-    if ($('.dr-preset-list', this.element).length) {
-      var item = $('.dr-preset-list .dr-list-item:nth-of-type(' + (i + 1) + ') .dr-item-aside', this.element);
-      item.data('start', startISO);
-      item.data('end', endISO);
-      item.html(string);
-    } else {
-      ul.append('<li class="dr-list-item">' + preset.label +
-        '<span class="dr-item-aside" data-start="' + startISO + '" data-end="' + endISO + '">' + string + '</span>' +
-        '</li>');
+      if ($('.dr-preset-list', self.element).length) {
+        var item = $('.dr-preset-list .dr-list-item:nth-of-type(' + (i + 1) + ') .dr-item-aside', self.element);
+        item.data('start', startISO);
+        item.data('end', endISO);
+        item.html(string);
+      } else {
+        ul.append('<li class="dr-list-item">' + preset.label +
+          '<span class="dr-item-aside" data-start="' + startISO + '" data-end="' + endISO + '">' + string + '</span>' +
+          '</li>');
+      }
     }
   }
 
