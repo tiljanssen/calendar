@@ -1,14 +1,16 @@
 var ss = new Calendar({
   element: $('.daterange--single'),
-  current_date: 'June 15, 2015',
   format: {input: 'M/D/YYYY'},
   placeholder: 'Select a Date',
-  required: false
+  required: false,
+  callback: function() {
+    console.log('Single calendar callback triggered');
+  }
 });
 
 var dd = new Calendar({
   element: $('.one'),
-  earliest_date: 'January 1, 2000',
+  earliest_date: '2000-01-01',
   latest_date: moment(),
   start_date: moment().subtract(29, 'days'),
   end_date: moment(),
@@ -22,7 +24,7 @@ var dd = new Calendar({
 
 new Calendar({
   element: $('.two'),
-  earliest_date: 'January 1, 2000',
+  earliest_date: '2000-01-01',
   latest_date: moment(),
   start_date: moment().subtract(29, 'days'),
   end_date: moment(),
@@ -37,7 +39,7 @@ new Calendar({
 
 new Calendar({
   element: $('.three'),
-  earliest_date: 'January 1, 2000',
+  earliest_date: '2000-01-01',
   latest_date: moment(),
   start_date: moment().subtract(29, 'days'),
   end_date: moment(),
@@ -51,8 +53,8 @@ new Calendar({
     end: moment().subtract(1, 'month').endOf('month')
   },{
     label: 'Last year',
-    start: moment().subtract(12, 'months').startOf('month'),
-    end: moment().subtract(1, 'month').endOf('month')
+    start: moment().subtract(1, 'year').startOf('year'),
+    end: moment().subtract(1, 'year').endOf('year')
   }],
   callback: function() {
     var start = moment(this.start_date).format('ll'),

@@ -1,3 +1,13 @@
+## 1.0.10 Update
+- Better iOS support. The date inputs are no longer editable. Having a keyboard popup for editing dates was a lot slower then just tapping stuff. So we cut it. Thanks [azaytsev-csr](https://github.com/azaytsev-csr)!
+- Minor tweaks and outlier bug fixes Thanks [Paul Ryan](https://github.com/paullryan)!
+- More consistent moment usage. Cleaned up the code base quite a bit. Thanks [Theodore Brown](https://github.com/theodorejb)!
+- Fire callback on single calendar when value is deleted [](https://github.com/Baremetrics/calendar/issues/68)
+
+## 1.0.9 Update
+- Don't automatically include the "This month" preset in with custom presets (sorry guys)
+- If required is set to `false` for a date range but you've included a `current_date` value the input will pre-fill with that date rather then defaulting to the placeholder
+
 ## 1.0.8 Update
 - Pulled in a couple pull requests to fix some locale issues
 - Couple small bug fixes and performance improvements
@@ -18,8 +28,8 @@ Custom presets!!
       end: moment().subtract(1, 'month').endOf('month')
     },{
       label: 'Last year',
-      start: moment().subtract(12, 'months').startOf('month'),
-      end: moment().subtract(1, 'month').endOf('month')
+      start: moment().subtract(1, 'year').startOf('year'),
+      end: moment().subtract(1, 'year').endOf('year')
     }]
   ```
 
